@@ -1,16 +1,18 @@
 import { Octokit } from 'octokit';
 import { repos } from 'src/database/usersDb';
 
-export const findProjects = async (data) => {
+export const findRepos = async (data, page, perPage) => {
 
   const octokit = new Octokit({
     auth: `${data.gitToken}`,
   })
 
   try {
-    const result = await octokit.request('GET /users/{owner}/repos', {
-      owner: `${data.username}`,
-    })
+    const result = await octokit.request(
+      `GET /users/{owner}/repos?page=${page}&per_page=${perPage}`,
+      {
+        owner: `${data.username}`,
+      })
 
     return result?.data;
 
@@ -18,6 +20,7 @@ export const findProjects = async (data) => {
     console.log(error);
   }
 };
+/*
 
 export const findCommits = async (data) => {
   const octokit = new Octokit({
@@ -35,4 +38,4 @@ export const findCommits = async (data) => {
   } catch (error) {
     console.log(error);
   }
-};
+}; */

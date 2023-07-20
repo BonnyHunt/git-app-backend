@@ -1,5 +1,6 @@
 import {
   Controller,
+  Query,
   Get,
   Post,
   Put,
@@ -30,8 +31,12 @@ export class UsersController {
   }
 
   @Get(':id/repos')
-  findRepos(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findProjects(id);
+  findRepos(
+    @Query('page') page: number,
+    @Query('per_page') perPage: number,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.usersService.findProjects(id, page, perPage);
   }
 
   @Post()

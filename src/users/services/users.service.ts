@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { repos, users } from 'src/database/usersDb';
-import { findProjects } from 'src/utils/utils';
+import { findRepos } from 'src/utils/utils';
 
 @Injectable()
 export class UsersService {
@@ -52,14 +52,14 @@ export class UsersService {
     return true;
   }
 
-  findProjects(id: number) {
+  findProjects(id: number, page: number, perPage: number) {
     const user = this.findOne(id);
 
     if (!user) {
       throw new NotFoundException(`Project #${name} not found`);
     }
     try {
-      const response = findProjects(user);
+      const response = findRepos(user, page, perPage);
       return response;
     } catch (error) {
       throw new NotFoundException(error);
