@@ -3,6 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { users } from 'src/database/usersDb';
+import { findCommits } from 'src/utils/findComits';
+import { CreateProjectDto } from '../dtos/project.dto';
 
 @Injectable()
 export class UsersService {
@@ -50,12 +52,31 @@ export class UsersService {
     return true;
   }
 
-  findProject(id: number, reponame: string) {
+  createProject(id: number, data: CreateProjectDto) {
     const user = this.findOne(id);
-    const project = user.projects.find((item) => item?.name === reponame);
+    const projects = user.projects;
+    const newProject = {
+      ...data,
+    };
+    projects.push(newProject);
+
+    return newProject;
+  }
+
+  findCommits(id: number, repo: string) {
+    const user = this.findOne(id);
+    const project = user.projects.find((item) => {
+      return item?.name === repo;
+    });
+
     if (!project) {
-      throw new NotFoundException(`Project #${reponame} not found`);
+      throw new NotFoundException(`Project #${name} not found`);
     }
-    return project;
+    try {
+      const response = findCommits(project);
+      return response;
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
   }
 }

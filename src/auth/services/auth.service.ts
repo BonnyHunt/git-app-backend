@@ -1,16 +1,18 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
-import { users } from 'src/database/usersDb';
-import { CreateUserDto } from 'src/users/dtos/user.dto';
-import { Project, User } from 'src/users/entities/user.entity';
-import { LoginAuthDto } from '../dtos/login-auth.dto';
 import { JwtService } from '@nestjs/jwt';
+
+import { CreateUserDto } from 'src/users/dtos/user.dto';
+import { LoginAuthDto } from '../dtos/login-auth.dto';
+
+import { Project, User } from 'src/users/entities/user.entity';
+import { projects, users } from 'src/database/usersDb';
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) { }
 
-  private projects: Project[] = [];
+  private projects: Project[] = projects;
   private users: User[] = users;
   private counterId = users.length - 1;
 

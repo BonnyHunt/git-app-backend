@@ -9,4 +9,6 @@ export class User {
 }
 export class Project {
   name: string;
+  key: string;
+  username: string;
 }

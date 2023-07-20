@@ -13,6 +13,7 @@ import { ApiTags } from '@nestjs/swagger/dist';
 
 import { UsersService } from '../services/users.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
+import { CreateProjectDto } from '../dtos/project.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -28,17 +29,26 @@ export class UsersController {
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
-  @Get(':id/:reponame')
+
+  @Get(':id/:repo/commits')
   findProyect(
     @Param('id', ParseIntPipe) id: number,
-    @Param('reponame') reponame: string,
+    @Param('repo') name: string,
   ) {
-    return this.usersService.findProject(id, reponame);
+    return this.usersService.findCommits(id, name);
   }
 
   @Post()
   createUser(@Body() paiload: CreateUserDto) {
     return this.usersService.create(paiload);
+  }
+
+  @Post(':id')
+  createProyect(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: CreateProjectDto,
+  ) {
+    return this.usersService.createProject(id, payload);
   }
 
   @Put(':id')
