@@ -5,10 +5,5 @@ export class User {
   password: string;
   name: string;
   lastName: string;
-  projects?: Project[];
-}
-export class Project {
-  name: string;
-  key: string;
-  username: string;
+  gitToken: string;
 }

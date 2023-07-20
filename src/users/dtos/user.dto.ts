@@ -32,6 +32,10 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   readonly lastName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly gitToken: string;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) { }

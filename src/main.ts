@@ -12,6 +12,7 @@ async function bootstrap() {
     }),
   );
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('API')
     .setDescription('git-app')
     .setVersion('1.0')
