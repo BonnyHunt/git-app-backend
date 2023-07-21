@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { users } from 'src/database/usersDb';
-import { findCommits, findRepos } from 'src/utils/utils';
+import { findCommits, findRepositories, findRepository } from 'src/utils/utils';
 
 @Injectable()
 export class UsersService {
@@ -51,14 +51,28 @@ export class UsersService {
     return true;
   }
 
-  findRepos(id: number, page?: number, per_page?: number) {
+  findRepositories(id: number, page?: number, per_page?: number) {
     const user = this.findOne(id);
 
     if (!user) {
       throw new NotFoundException(`Repos from #${id} not found`);
     }
     try {
-      const response = findRepos(user, page, per_page);
+      const response = findRepositories(user, page, per_page);
+      return response;
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
+
+  findRepository(id: number, name: string) {
+    const user = this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException(`Repository ${name} not found`);
+    }
+    try {
+      const response = findRepository(user, name);
       return response;
     } catch (error) {
       throw new NotFoundException(error);

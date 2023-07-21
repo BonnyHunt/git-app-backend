@@ -1,6 +1,6 @@
 import { Octokit } from 'octokit';
 
-export const findRepos = async (data, page, per_page) => {
+export const findRepositories = async (data, page, per_page) => {
 
   const octokit = new Octokit({
     auth: `${data.gitToken}`,
@@ -12,6 +12,25 @@ export const findRepos = async (data, page, per_page) => {
       {
         owner: `${data.username}`,
       })
+
+    return result?.data;
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const findRepository = async (data, name) => {
+
+  const octokit = new Octokit({
+    auth: `${data.gitToken}`,
+  })
+
+  try {
+    const result = await octokit.request(`GET /repos/{owner}/{repo}`, {
+      owner: `${data.username}`,
+      repo: `${name}`,
+    })
 
     return result?.data;
 

@@ -31,12 +31,20 @@ export class UsersController {
   }
 
   @Get(':id/repos')
-  findRepos(
+  findRepositories(
     @Query('page') page: number,
     @Query('per_page') per_page: number,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.usersService.findRepos(id, page, per_page);
+    return this.usersService.findRepositories(id, page, per_page);
+  }
+
+  @Get(':id/:name')
+  findRepository(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('name') name: string,
+  ) {
+    return this.usersService.findRepository(id, name);
   }
 
   @Get(':id/:name/commits')
