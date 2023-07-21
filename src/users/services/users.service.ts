@@ -2,14 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
-import { repos, users } from 'src/database/usersDb';
-import { findRepos } from 'src/utils/utils';
+import { users } from 'src/database/usersDb';
+import { findCommits, findRepos } from 'src/utils/utils';
 
 @Injectable()
 export class UsersService {
   private counterId = 1;
   private users: User[] = users;
-  private repos: object[] = repos;
 
   findAll() {
     return this.users;
@@ -52,14 +51,27 @@ export class UsersService {
     return true;
   }
 
-  findProjects(id: number, page: number, perPage: number) {
+  findRepos(id: number, page?: number, per_page?: number) {
     const user = this.findOne(id);
 
     if (!user) {
-      throw new NotFoundException(`Project #${name} not found`);
+      throw new NotFoundException(`Repos from #${id} not found`);
     }
     try {
-      const response = findRepos(user, page, perPage);
+      const response = findRepos(user, page, per_page);
+      return response;
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
+
+  findCommits(id: number, name: string, page?: number, per_page?: number) {
+    const user = this.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`Commits from Repo #${name} not found`);
+    }
+    try {
+      const response = findCommits(user, name, page, per_page);
       return response;
     } catch (error) {
       throw new NotFoundException(error);

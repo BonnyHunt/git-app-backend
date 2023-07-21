@@ -1,7 +1,6 @@
 import { Octokit } from 'octokit';
-import { repos } from 'src/database/usersDb';
 
-export const findRepos = async (data, page, perPage) => {
+export const findRepos = async (data, page, per_page) => {
 
   const octokit = new Octokit({
     auth: `${data.gitToken}`,
@@ -9,7 +8,7 @@ export const findRepos = async (data, page, perPage) => {
 
   try {
     const result = await octokit.request(
-      `GET /users/{owner}/repos?page=${page}&per_page=${perPage}`,
+      `GET /users/{owner}/repos?page=${page}&per_page=${per_page}`,
       {
         owner: `${data.username}`,
       })
@@ -20,22 +19,23 @@ export const findRepos = async (data, page, perPage) => {
     console.log(error);
   }
 };
-/*
 
-export const findCommits = async (data) => {
+export const findCommits = async (data, name, page, per_page) => {
   const octokit = new Octokit({
     auth: `${data.gitToken}`,
   });
 
   try {
-    const result = await octokit.request(`GET /repos/{owner}/{repo}/commits`, {
-      owner: `${data.user}`,
-      repo: `${data.rep}`,
-    });
+    const result = await octokit.request(
+      `GET /repos/{owner}/{repo}/commits?page=${page}&per_page=${per_page}`,
+      {
+        owner: `${data.username}`,
+        repo: `${name}`,
+      });
 
     return result?.data?.map((item) => item.commit);
 
   } catch (error) {
     console.log(error);
   }
-}; */
+};

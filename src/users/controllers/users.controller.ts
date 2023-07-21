@@ -33,10 +33,20 @@ export class UsersController {
   @Get(':id/repos')
   findRepos(
     @Query('page') page: number,
-    @Query('per_page') perPage: number,
+    @Query('per_page') per_page: number,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return this.usersService.findProjects(id, page, perPage);
+    return this.usersService.findRepos(id, page, per_page);
+  }
+
+  @Get(':id/:name/commits')
+  findCommits(
+    @Query('page') page?: number,
+    @Query('per_page') per_page?: number,
+    @Param('id', ParseIntPipe) id?: number,
+    @Param('name') name?: string,
+  ) {
+    return this.usersService.findCommits(id, name, page, per_page);
   }
 
   @Post()

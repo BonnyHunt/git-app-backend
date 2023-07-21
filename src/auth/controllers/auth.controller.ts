@@ -11,13 +11,11 @@ import { JwtAuthGuard } from '../jwt-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) { }
 
-  //@UseGuards(JwtAuthGuard)
   @Post('register')
   register(@Body() BodyUser: CreateUserDto) {
     return this.authService.register(BodyUser);
   }
 
-  //@UseGuards(JwtAuthGuard)
   @Post('login')
   login(@Body() BodyUser: LoginAuthDto) {
     return this.authService.login(BodyUser);
